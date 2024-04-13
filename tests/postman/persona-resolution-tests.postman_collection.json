@@ -1,0 +1,270 @@
+{
+	"info": {
+		"_postman_id": "acf52795-4f3c-4346-bbb9-c5d07377870a",
+		"name": "FESL persona resolution tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "persona-by-name",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let rawPlayerName = pm.variables.get('name');",
+							"pm.variables.set('uriEncodedName', encodeURIComponent(rawPlayerName));"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Response contains persona name\", function () {",
+							"    pm.expect(pm.response.text().toLowerCase()).to.includes(`\"${String(pm.variables.get(\"name\")).toLowerCase()}\"`);",
+							"});",
+							"pm.test(\"Response contains persona id\", function () {",
+							"    pm.expect(pm.response.text()).to.include(pm.variables.get(\"pid\"));",
+							"});",
+							"pm.test(\"Content-Type is application/json\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"    pm.response.to.be.header(\"Content-Type\", \"application/json\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUri}}/persona/{{namespace}}/by-name/{{uriEncodedName}}",
+					"host": [
+						"{{baseUri}}"
+					],
+					"path": [
+						"persona",
+						"{{namespace}}",
+						"by-name",
+						"{{uriEncodedName}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "persona-by-id",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Response contains persona name\", function () {",
+							"    pm.expect(pm.response.text().toLowerCase()).to.includes(`\"${String(pm.variables.get(\"name\")).toLowerCase()}\"`);",
+							"});",
+							"pm.test(\"Response contains persona id\", function () {",
+							"    pm.expect(pm.response.text()).to.include(pm.variables.get(\"pid\"));",
+							"});",
+							"pm.test(\"Content-Type is application/json\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"    pm.response.to.be.header(\"Content-Type\", \"application/json\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUri}}/persona/{{namespace}}/by-id/{{pid}}",
+					"host": [
+						"{{baseUri}}"
+					],
+					"path": [
+						"persona",
+						"{{namespace}}",
+						"by-id",
+						"{{pid}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "personas-by-names",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let rawPlayerNameList = pm.variables.get('names');",
+							"pm.variables.set('jsonPlayerNameList', JSON.stringify(rawPlayerNameList));"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Response contains persona names\", function () {",
+							"    for (const name of pm.variables.get(\"names\")) {",
+							"        pm.expect(pm.response.text().toLowerCase()).to.includes(`\"${String(name).toLowerCase()}\"`);",
+							"    }",
+							"});",
+							"pm.test(\"Response contains persona ids\", function () {",
+							"    for (const pid of pm.variables.get(\"pids\")) {",
+							"        pm.expect(pm.response.text()).to.includes(pid);",
+							"    }",
+							"});",
+							"pm.test(\"Content-Type is application/json\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"    pm.response.to.be.header(\"Content-Type\", \"application/json\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{{jsonPlayerNameList}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUri}}/personas/{{namespace}}/by-names",
+					"host": [
+						"{{baseUri}}"
+					],
+					"path": [
+						"personas",
+						"{{namespace}}",
+						"by-names"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "personas-by-ids",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let rawPlayerIdList = pm.variables.get('pids');",
+							"pm.variables.set('jsonPlayerIdList', JSON.stringify(rawPlayerIdList));"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Response contains persona names\", function () {",
+							"    for (const name of pm.variables.get(\"names\")) {",
+							"        pm.expect(pm.response.text().toLowerCase()).to.includes(`\"${String(name).toLowerCase()}\"`);",
+							"    }",
+							"});",
+							"pm.test(\"Response contains persona ids\", function () {",
+							"    for (const pid of pm.variables.get(\"pids\")) {",
+							"        pm.expect(pm.response.text()).to.includes(pid);",
+							"    }",
+							"});",
+							"pm.test(\"Content-Type is application/json\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"    pm.response.to.be.header(\"Content-Type\", \"application/json\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{{jsonPlayerIdList}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUri}}/personas/{{namespace}}/by-ids",
+					"host": [
+						"{{baseUri}}"
+					],
+					"path": [
+						"personas",
+						"{{namespace}}",
+						"by-ids"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUri",
+			"value": "http://localhost:8000"
+		}
+	]
+}

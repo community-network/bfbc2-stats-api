@@ -1,0 +1,12 @@
+version: "3.7"
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - CLIENT_USERNAME=the_username
+      - CLIENT_PASSWORD=the_password
+      - REDIS_HOST=the_redis_host
+      - REDIS_PORT=the_redis_port
+      - REDIS_PASS=the_redis_password

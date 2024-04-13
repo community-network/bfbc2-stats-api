@@ -1,0 +1,5 @@
+fastapi[all]==0.95.0
+uvicorn==0.21.1
+pybfbc2stats==0.3.13
+redis==4.5.4
+fastapi-utils==0.2.1
